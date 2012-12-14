@@ -102,6 +102,13 @@ input[type="text"], input[type="password"] {
     height: 21px;
     margin-bottom: 10px;
     padding: 1px;
+    width: 98.5%;
+}
+
+select {
+    height: 21px;
+    margin-bottom: 10px;
+    padding: 1px;
     width: 100%;
 }
 
@@ -694,4 +701,118 @@ footer {
 
 footer a {
     font: italic 10px Aller;
+}
+
+/* -----------------------------------------------------------------------------
+ * Transfer Window
+ * -------------------------------------------------------------------------- */
+#modalContainer {
+    font: 12px/25px Aller;
+    color: white;
+    background-color: #404040;
+    margin-bottom: 8px;
+    margin-right: 18px;
+}
+
+#modalContainer .transfer-tabbar {
+    left: 0px;
+    top: 10px;
+    min-height: 60px;
+    position: relative;
+    font: 12px/25px Aller !important;
+    margin-bottom: 7px;
+} 
+
+.transfer-tabbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.transfer-tabbar ul li {
+    display: inline;
+    float: left;
+}
+
+.transfer-tabbar ul li a {
+    background-color: #F8791B;
+    color: #FFFFFF;
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    margin: 0px 2px 0 0;
+    min-width: 120px;
+    padding: 5px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.transfer-tabbar ul li a:hover {
+    background-color: #F36733;
+}
+
+.transfer-tabbar ul li a.selected {
+    background-color: red;
+    color: white;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 0;
+    border-width:3px;
+    border-color: white;
+    border-style:solid;
+}
+
+#process-transfer-button {
+    margin-left: 33%;
+    margin-top: 5px;
+    position: absolute;
+    bottom: 20px;
+}
+
+.modal-header {
+    background-color: transparent;
+    margin-top: -10px;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+#add-external-account-button {
+    font-size: 12px;
+}
+
+.hboxContainer:before, .hboxContainer:after {
+    content: "";
+    display: table;
+}
+.hboxContainer:after {
+    clear: both;
+}
+.hboxContainer {
+    height: 100%;
+    width: 100%;
+    zoom: 1;
+}
+    .hboxContainer div {
+        width: 48%;
+        float: left;
+    }
+        .hboxContainer div.symbol {
+            margin-right: 8px;
+        }
+.buttonPressed {
+    background-color: #404040 !important;
+    color: #F04100 !important;
+}
+.formError {
+    z-index: 999999;
+}
+#transfer-forms-container {
+    height: 350px;
+    width: 270px;
+}
+.lastField {
+    margin-bottom: 3px;
+}
+#price {
+    margin-bottom: 3px;
 }

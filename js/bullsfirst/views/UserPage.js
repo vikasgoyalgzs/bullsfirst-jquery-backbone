@@ -28,8 +28,9 @@ define(['bullsfirst/domain/UserContext',
         'bullsfirst/views/PositionsTabView',
         'bullsfirst/views/TabbarView',
         'bullsfirst/views/TransactionsTabView',
-        'bullsfirst/views/UsernameView'],
-       function(UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView, PositionsTabView, TabbarView, TransactionsTabView, UsernameView) {
+        'bullsfirst/views/UsernameView',
+        'bullsfirst/views/TransferView'],
+       function (UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView, PositionsTabView, TabbarView, TransactionsTabView, UsernameView, TransferView) {
 
     return Page.extend({
         el: '#user-page',
@@ -37,7 +38,8 @@ define(['bullsfirst/domain/UserContext',
         events: {
             'click #sign-out': 'logout',
             'click #trade-button': 'trade',
-            'click #transfer-button': 'transfer'
+            'click #transfer-button': 'transfer',
+            'click #modalCloseButton': 'closeModalWindow'
         },
 
         initialize: function() {
@@ -54,6 +56,11 @@ define(['bullsfirst/domain/UserContext',
             });
         },
 
+        closeModalWindow: function () {
+            $('#transfer-button').removeClass('buttonPressed');
+            $('#transfer-forms-container form').validationEngine('hideAll');
+        },
+
         logout: function() {
             UserContext.reset();
             MessageBus.trigger(Message.UserLoggedOutEvent);
@@ -65,8 +72,22 @@ define(['bullsfirst/domain/UserContext',
             return false;
         },
 
-        transfer: function() {
-            alert('Transfer');
+        transfer: function (event) {
+            var transferButton = $(event.currentTarget);
+            transferButton.addClass('buttonPressed');
+            var view = new TransferView({ model: UserContext.getBrokerageAccounts() });
+            view.render().showModal(
+                {
+                    backgroundClickClosesModal: false,
+                    "targetContainer": $("#transfer-window").draggable(),
+                    css:{
+                        "right": "0px",
+                        "bottom": "0px",
+                        "padding": "10px",
+                        "background-color": "transparent"
+                    }
+                }
+            );
             return false;
         },
 

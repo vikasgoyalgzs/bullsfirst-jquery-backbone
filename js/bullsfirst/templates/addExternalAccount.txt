@@ -1,0 +1,26 @@
+﻿<div class='modal-header'>Add an External Account</div>
+<section id="externalAccount-section">
+    <form id="add-external-account-form">
+    <label for="accountName">Account Name</label>
+    <input
+        id="accountName"
+        name="accountName"
+        type="text"
+        class="validate[required]">
+    <label for="routingNumber">Routing Number</label>
+    <input
+        id="routingNumber"
+        name="routingNumber"
+        type="text"
+        class="validate[required]">
+    <label for="accountNumber">Account Number</label>
+    <input
+        id="accountNumber"
+        name="accountNumber"
+        type="text"
+        class="validate[required]">
+    <div class="button-bar">
+        <a id="add-external-account-btn" class="button large transfer-icon" href="#"><span>Add Account</span></a>
+    </div>
+    </form>
+</section>

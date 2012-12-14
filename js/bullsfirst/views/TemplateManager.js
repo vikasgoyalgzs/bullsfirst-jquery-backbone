@@ -20,8 +20,10 @@
  * @author Naresh Bhatia
  */
 define(['bullsfirst/framework/Formatter',
-        'text!bullsfirst/templates/account.txt'],
-       function(Formatter, accountTemplate) {
+        'text!bullsfirst/templates/account.txt',
+        'text!bullsfirst/templates/transfer.txt',
+        'text!bullsfirst/templates/addExternalAccount.txt'],
+       function (Formatter, accountTemplate, transferTemplate, addExternalAccountTemplate) {
 
     var templates;
 
@@ -29,13 +31,24 @@ define(['bullsfirst/framework/Formatter',
         initialize: function() {
             this._registerHelpers();
             this.templates = {
-                'account': Handlebars.compile(accountTemplate)
+                'account': Handlebars.compile(accountTemplate),
+                'transfer': Handlebars.compile(transferTemplate),
+                'addExternalAccount': Handlebars.compile(addExternalAccountTemplate)
             };
         },
 
         _registerHelpers : function() {
             Handlebars.registerHelper('formatMoney', function(money) {
                 return Formatter.formatMoney(money);
+            });
+            Handlebars.registerHelper('ifEqual', function (left, right, options) {
+                if (Handlebars.Utils.isEmpty(left) ||
+                    Handlebars.Utils.isEmpty(right) ||
+                    (left !== right)) {
+                    return options.inverse(this);
+                } else {
+                    return options.fn(this);
+                }
             });
         },
 
