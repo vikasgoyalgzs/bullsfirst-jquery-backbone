@@ -22,8 +22,8 @@
  * @author Vikas Goyal
  */
 $.fn.serializeForm = function () {
-    var o = {};
-    var a = this.serializeArray();
+    var o = {},
+        a = this.serializeArray();
     $.each(a, function () {
         if (o[this.name] !== undefined) {
             if (!o[this.name].push) {
@@ -33,6 +33,6 @@ $.fn.serializeForm = function () {
         } else {
             o[this.name] = this.value || '';
         }
-    })
+    });
     return o;
 };

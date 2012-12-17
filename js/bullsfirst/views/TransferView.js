@@ -20,14 +20,15 @@
  * @author Vikas Goyal
  */
 /* jslint flags */
-/*global $, jQuery, define, Backbone, _*/
+/*global $, jQuery, define, Backbone*/
 define(['bullsfirst/domain/UserContext',
         'bullsfirst/framework/ErrorUtil',
         'bullsfirst/framework/Message',
         'bullsfirst/framework/MessageBus',
         'bullsfirst/services/AccountService',
+        'bullsfirst/services/InstrumentService',
         'bullsfirst/views/TemplateManager'],
-       function (UserContext, ErrorUtil, Message, MessageBus, AccountService, TemplateManager) {
+       function (UserContext, ErrorUtil, Message, MessageBus, AccountService, InstrumentService, TemplateManager) {
 
     return Backbone.ModalView.extend({
         events: {
@@ -37,28 +38,33 @@ define(['bullsfirst/domain/UserContext',
             'click #add-external-account-button': 'addExternalAcoount'
         },
 
-        selectTab: function (ev) {
-            var selectedTab = $(ev.currentTarget),
+        selectTab: function (event) {
+            var selectedTab = $(event.currentTarget),
                 prevSelectedTab = $('.transfer-tabbar a.selected'),
-                securitiesForm = $('#securities-transfer-form'),
-                cashForm = $('#cash-transfer-form');
+                securitiesFieldsContainer = $('#securities-fields-container'),
+                cashFieldsContainer = $('#cash-fields-container');
 
             if (selectedTab !== prevSelectedTab) {
-                $('#transfer-forms-container form').validationEngine('hideAll');
+                $('#transfer-forms').validationEngine('hideAll');
 
-                //toggle display of forms
-                securitiesForm.toggleClass('nodisplay');
-                cashForm.toggleClass('nodisplay');
+                //toggle display of field containers (securities vs cash)
+                securitiesFieldsContainer.toggleClass('nodisplay');
+                securitiesFieldsContainer.find('input').toggleClass('validate[required]');
+                cashFieldsContainer.toggleClass('nodisplay');
+                cashFieldsContainer.find('input').toggleClass('validate[required]');
 
                 //toggle selected tab
                 selectedTab.toggleClass('selected');
                 prevSelectedTab.toggleClass('selected');
+
+                //re-attach validation engine 
+                $('#transfer-form').validationEngine();
             }
             return false;
         },
 
         processToAccountSelection: function (event) {
-            //TODO: Find a better way to display empty 'select' tag
+            //TODO: Find a better way to display empty option for a 'select' tag
             var toAccountDropdown = $(event.currentTarget),
                 emptyOption = toAccountDropdown.find('option[value=""]');
 
@@ -67,10 +73,19 @@ define(['bullsfirst/domain/UserContext',
             }
         },
 
+        processSymbolChange: function (event) {
+            var symbol = event.target.value;
+            this.marketPrice = new MarketPrice({ symbol: symbol });
+            this.marketPrice.fetch({
+                success: _.bind(this._marketPriceFetched, this),
+                error: ErrorUtil.showBackboneError
+            });
+        },
+
         processTransfer: function () {
             //get the form currently being displayed
             var transferRequest,
-                transferForm = $('#transfer-forms-container form').not('.nodisplay');
+                transferForm = $('#transfer-form');
 
             if (transferForm.validationEngine('validate')) {
                 transferRequest = transferForm.serializeForm();
@@ -115,18 +130,34 @@ define(['bullsfirst/domain/UserContext',
             alert('Under Construction');
         },
 
+        populateSymbolField: function () {
+            //get instruments
+            InstrumentService.getInstruments(function (data) {
+                var instruments = $.map(data, function (instrument) {
+                    return {
+                        label: instrument.symbol + ' (' + instrument.name + ')',
+                        value: instrument.symbol
+                    }
+                });
+                $('#symbol').autocomplete({
+                    source: instruments
+                });
+            }, ErrorUtil.showError);
+        },
+
         render: function() {
             var template = TemplateManager.getTemplate('transfer'),
                 accounts = this.model.toJSON(),
-                selectedAccount = UserContext.getSelectedAccount();
+                selectedAccount = UserContext.getSelectedAccount(),
+                that = this;
 
             $(this.el).html(template({
                 accounts: accounts,
                 selectedAccount: selectedAccount
             }));
             _.defer(function () {
-                $('#securities-transfer-form').validationEngine();
-                $('#cash-transfer-form').validationEngine();
+                $('#transfer-form').validationEngine();
+                that.populateSymbolField();
             })
             return this;
 	    }

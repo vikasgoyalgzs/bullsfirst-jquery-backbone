@@ -73,14 +73,15 @@ define(['bullsfirst/domain/UserContext',
         },
 
         transfer: function (event) {
-            var transferButton = $(event.currentTarget);
+            var transferButton = $(event.currentTarget),
+                transferView = new TransferView({ model: UserContext.getBaseAccounts() });
+
             transferButton.addClass('buttonPressed');
-            var view = new TransferView({ model: UserContext.getBrokerageAccounts() });
-            view.render().showModal(
+            transferView.render().showModal(
                 {
                     backgroundClickClosesModal: false,
                     "targetContainer": $("#transfer-window").draggable(),
-                    css:{
+                    css: {
                         "right": "0px",
                         "bottom": "0px",
                         "padding": "10px",

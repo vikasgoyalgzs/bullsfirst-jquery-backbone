@@ -6,58 +6,51 @@
     </ul>
 </div>
 <div id="transfer-forms-container">
-    <form id="cash-transfer-form">
-        <label for="fromAccountCash">From</label>
-        <select id="fromAccountCash" name="fromAccount" class="validate[required]">
+    <form id="transfer-form">
+        <label for="fromAccount">From</label>
+        <select id="fromAccount" name="fromAccount" class="validate[required]">
             {{#each accounts}}
-                <option {{#ifEqual ../selectedAccount.id id}} selected="selected" {{/ifEqual}} value="{{id}}">{{name}} ( {{formatMoney marketValue}})</option>
+                <option {{#ifEqual ../selectedAccount.id id}} selected="selected" {{/ifEqual}} value="{{id}}">{{displayString}}</option>
             {{/each}}
         </select>
-        <label for="toAccountCash">To</label>
-        <select id="toAccountCash" name="toAccount" class="validate[required]">
+        <label for="toAccount">To</label>
+        <select id="toAccount" name="toAccount" class="validate[required]">
             <option value=""> </option>
             {{#each accounts}}
-                <option value="{{id}}">{{name}} ( {{formatMoney marketValue}})</option>
+                <option value="{{id}}">{{name}} {{displayString}}</option>
             {{/each}}
         </select>
-        <label for="amount">Amount</label>
-        <input
-            id="amount"
-            name="amount"
-            type="text"
-            class="validate[required,custom[number],min[0.01]] lastField">
-      </form>
-    <form id="securities-transfer-form" class="nodisplay">
-        <label for="fromAccountSecurities">From</label>
-        <select id="fromAccountSecurities" name="fromAccount" class="validate[required]">
-            {{#each accounts}}
-                <option {{#ifEqual ../selectedAccount.id idOption1}} selected="selected" {{/ifEqual}} value="{{id}}">{{name}} ( {{formatMoney marketValue}})</option>
-            {{/each}}
-        </select>
-        <label for="toAccountSecurities">To</label>
-        <select id="toAccountSecurities" name="toAccount" class="validate[required]">
-            <option value=""> </option>
-            {{#each accounts}}
-                <option value="{{id}}">{{name}} ( {{formatMoney marketValue}})</option>
-            {{/each}}
-        </select>
-        <div class="hboxContainer">
-            <div class="symbol">
-                <label for="symbol">Symbol</label>
-                <input type="text" class="validate[required]" name="symbol" id="symbol">
+        <div id="securities-fields-container" class="nodisplay">
+            <div class="hboxContainer">
+                <div class="symbol">
+                    <label for="symbol">Symbol</label>
+                    <input type="text" name="symbol" id="symbol">
+                </div>
+                <div class="quantity">
+                    <label for="quantity">Quantity</label>
+                    <input 
+                        type="text" 
+                        name="quantity" 
+                        id="quantity" 
+                        class="validate[custom[number],min[1]]"/>
+                </div>
             </div>
-            <div class="quantity">
-                <label for="quantity">Quantity</label>
-                <input type="text" class="validate[required]" name="quantity" id="quantity">
-            </div>
+            <label for="price">Price</label>
+            <input
+                id="price"
+                name="price"
+                type="text"
+                class="validate[custom[number],min[0.01]] lastField"/>
         </div>
-        <label for="price">Price</label>
-        <input
-            id="price"
-            name="price"
-            type="text"
-            class="validate[required]">
-      </form>
+        <div id="cash-fields-container">
+            <label for="amount">Amount</label>
+            <input
+                id="amount"
+                name="amount"
+                type="text"
+                class="validate[required] validate[custom[number],min[0.01]] lastField" />
+        </div>
+    </form>
     <a id="add-external-account-button" href="#"><span>Add an external account</span></a>
 </div>
 <a id="process-transfer-button" class="button large transfer-icon" href="#"><span>Transfer</span></a>

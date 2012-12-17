@@ -710,8 +710,12 @@ footer a {
     font: 12px/25px Aller;
     color: white;
     background-color: #404040;
-    margin-bottom: 8px;
-    margin-right: 18px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    border: 8px solid rgb(255, 255, 255);
+    border: 8px solid rgba(255, 255, 255, .75);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 }
 
 #modalContainer .transfer-tabbar {
@@ -740,11 +744,14 @@ footer a {
     display: block;
     height: 35px;
     line-height: 35px;
-    margin: 0px 2px 0 0;
+    margin: 0px 3px 0 0;
     min-width: 120px;
     padding: 5px;
     text-align: center;
     font-size: 13px;
+    border-width:3px;
+    border-color: transparent;
+    border-style:solid;
 }
 
 .transfer-tabbar ul li a:hover {
@@ -754,8 +761,6 @@ footer a {
 .transfer-tabbar ul li a.selected {
     background-color: red;
     color: white;
-    height: 30px;
-    line-height: 30px;
     margin-top: 0;
     border-width:3px;
     border-color: white;

@@ -33,9 +33,6 @@ Backbone.ModalView =
             {
                 "border": "0px",
                 "background-color": "#fff",
-                "-webkit-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
-                "-moz-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
-                "box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
                 "-webkit-border-radius": "0px",
                 "-moz-border-radius": "0px",
                 "border-radius": "0px"
@@ -100,8 +97,8 @@ Backbone.ModalView =
                                     height: $(document).height(), // Span the full document height...
                                     width: "100%", // ...and full width
                                     opacity: 0.5, // Make it slightly transparent
-                                    backgroundColor: "#000",
-                                    "z-index": 99900
+                                    backgroundColor: "transparent",
+                                    "z-index": -1
                                 })
                             .appendTo(document.body)
                             .hide();
