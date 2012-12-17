@@ -43,7 +43,7 @@ define(['bullsfirst/domain/UserContext',
                 prevSelectedTab = $('.transfer-tabbar a.selected'),
                 fieldContainers = $('.transfer-fields-container');
 
-            if (selectedTab !== prevSelectedTab) {
+            if (selectedTab[0] !== prevSelectedTab[0]) {
                 $('#transfer-form').validationEngine('hideAll');
 
                 //toggle display of field containers (securities vs cash)
