@@ -20,17 +20,17 @@
  * @author Naresh Bhatia
  */
 define(['bullsfirst/framework/Formatter',
-        'text!bullsfirst/templates/account.txt',
-        'text!bullsfirst/templates/transfer.txt',
-        'text!bullsfirst/templates/addExternalAccount.txt'],
+        'text!bullsfirst/templates/account.html',
+        'text!bullsfirst/templates/transfer.html',
+        'text!bullsfirst/templates/addExternalAccount.html'],
        function (Formatter, accountTemplate, transferTemplate, addExternalAccountTemplate) {
+    'use strict';
 
-    var templates;
-
+    var _templates;
     return {
         initialize: function() {
             this._registerHelpers();
-            this.templates = {
+            _templates = {
                 'account': Handlebars.compile(accountTemplate),
                 'transfer': Handlebars.compile(transferTemplate),
                 'addExternalAccount': Handlebars.compile(addExternalAccountTemplate)
@@ -53,7 +53,7 @@ define(['bullsfirst/framework/Formatter',
         },
 
         getTemplate: function(name) {
-            return this.templates[name];
+            return _templates[name];
         }
     };
 });

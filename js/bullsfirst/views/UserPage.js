@@ -30,10 +30,18 @@ define(['bullsfirst/domain/UserContext',
         'bullsfirst/views/TransactionsTabView',
         'bullsfirst/views/UsernameView',
         'bullsfirst/views/TransferView'],
-       function (UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView, PositionsTabView, TabbarView, TransactionsTabView, UsernameView, TransferView) {
+       function (UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView,
+                 PositionsTabView, TabbarView, TransactionsTabView, UsernameView, TransferView) {
+    'use strict';
 
     return Page.extend({
         el: '#user-page',
+        usernameView: null,
+        tabbarView: null,
+        accountsTabView: null,
+        positionsTabView: null,
+        ordersTabView: null,
+        transactionsTabView: null,
 
         events: {
             'click #sign-out': 'logout',
@@ -43,12 +51,12 @@ define(['bullsfirst/domain/UserContext',
         },
 
         initialize: function() {
-            new UsernameView({model: UserContext.getUser()});
-            new TabbarView({el: '#user-page .tabbar'});
-            new AccountsTabView();
-            new PositionsTabView();
-            new OrdersTabView();
-            new TransactionsTabView();
+            this.usernameView = new UsernameView({model: UserContext.getUser()});
+            this.tabbarView = new TabbarView({el: '#user-page .tabbar'});
+            this.accountsTabView = new AccountsTabView();
+            this.positionsTabView = new PositionsTabView();
+            this.ordersTabView = new OrdersTabView();
+            this.transactionsTabView = new TransactionsTabView();
 
             // Subscribe to events
             MessageBus.on(Message.UserLoggedInEvent, function() {
@@ -58,7 +66,7 @@ define(['bullsfirst/domain/UserContext',
 
         closeModalWindow: function () {
             $('#transfer-button').removeClass('buttonPressed');
-            $('#transfer-forms-container form').validationEngine('hideAll');
+            $('#transfer-form').validationEngine('hideAll');
         },
 
         logout: function() {
@@ -68,7 +76,6 @@ define(['bullsfirst/domain/UserContext',
         },
 
         trade: function() {
-            alert('Trade');
             return false;
         },
 
@@ -80,12 +87,13 @@ define(['bullsfirst/domain/UserContext',
             transferView.render().showModal(
                 {
                     backgroundClickClosesModal: false,
-                    "targetContainer": $("#transfer-window").draggable(),
+                    'targetContainer': $('#transfer-window').draggable(),
+                    //TODO: move this to a css file
                     css: {
-                        "right": "0px",
-                        "bottom": "0px",
-                        "padding": "10px",
-                        "background-color": "transparent"
+                        'right': '0px',
+                        'bottom': '0px',
+                        'padding': '10px',
+                        'background-color': 'transparent'
                     }
                 }
             );
@@ -93,14 +101,14 @@ define(['bullsfirst/domain/UserContext',
         },
 
         selectTab: function(tab) {
-		    this.$el.find('.tab').each(function() {
+            this.$el.find('.tab').each(function() {
                 if (this.id === tab) {
                     $(this).removeClass('nodisplay');
                 }
                 else {
-			        $(this).addClass('nodisplay');	
+                    $(this).addClass('nodisplay');
                 }
-		    });
+            });
         }
     });
 });

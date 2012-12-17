@@ -20,7 +20,7 @@
  * @author Vikas Goyal
  */
 /* jslint flags */
-/*global $, jQuery, define, Backbone*/
+/*global $, alert, define, Backbone*/
 define(['bullsfirst/domain/UserContext',
         'bullsfirst/framework/ErrorUtil',
         'bullsfirst/framework/Message',
@@ -29,7 +29,7 @@ define(['bullsfirst/domain/UserContext',
         'bullsfirst/services/InstrumentService',
         'bullsfirst/views/TemplateManager'],
        function (UserContext, ErrorUtil, Message, MessageBus, AccountService, InstrumentService, TemplateManager) {
-
+    'use strict';
     return Backbone.ModalView.extend({
         events: {
             'click .transfer-tabbar a': 'selectTab',
@@ -41,23 +41,21 @@ define(['bullsfirst/domain/UserContext',
         selectTab: function (event) {
             var selectedTab = $(event.currentTarget),
                 prevSelectedTab = $('.transfer-tabbar a.selected'),
-                securitiesFieldsContainer = $('#securities-fields-container'),
-                cashFieldsContainer = $('#cash-fields-container');
+                fieldContainers = $('.transfer-fields-container');
 
             if (selectedTab !== prevSelectedTab) {
-                $('#transfer-forms').validationEngine('hideAll');
+                $('#transfer-form').validationEngine('hideAll');
 
                 //toggle display of field containers (securities vs cash)
-                securitiesFieldsContainer.toggleClass('nodisplay');
-                securitiesFieldsContainer.find('input').toggleClass('validate[required]');
-                cashFieldsContainer.toggleClass('nodisplay');
-                cashFieldsContainer.find('input').toggleClass('validate[required]');
+
+                fieldContainers.toggleClass('nodisplay');
+                fieldContainers.find('input').toggleClass('validate[required]');
 
                 //toggle selected tab
                 selectedTab.toggleClass('selected');
                 prevSelectedTab.toggleClass('selected');
 
-                //re-attach validation engine 
+                //re-attach validation engine
                 $('#transfer-form').validationEngine();
             }
             return false;
@@ -71,15 +69,6 @@ define(['bullsfirst/domain/UserContext',
             if (emptyOption) {
                 emptyOption.hide();
             }
-        },
-
-        processSymbolChange: function (event) {
-            var symbol = event.target.value;
-            this.marketPrice = new MarketPrice({ symbol: symbol });
-            this.marketPrice.fetch({
-                success: _.bind(this._marketPriceFetched, this),
-                error: ErrorUtil.showBackboneError
-            });
         },
 
         processTransfer: function () {
@@ -121,7 +110,7 @@ define(['bullsfirst/domain/UserContext',
         },
         
         transferProcessed: function () {
-            alert("Transfer processed");
+            alert('Transfer processed');
             UserContext.updateAccounts();
             $('#modalCloseButton').click();
         },
@@ -137,7 +126,7 @@ define(['bullsfirst/domain/UserContext',
                     return {
                         label: instrument.symbol + ' (' + instrument.name + ')',
                         value: instrument.symbol
-                    }
+                    };
                 });
                 $('#symbol').autocomplete({
                     source: instruments
@@ -158,9 +147,9 @@ define(['bullsfirst/domain/UserContext',
             _.defer(function () {
                 $('#transfer-form').validationEngine();
                 that.populateSymbolField();
-            })
+            });
             return this;
-	    }
+        }
 
     });
 });

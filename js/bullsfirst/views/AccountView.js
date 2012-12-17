@@ -26,60 +26,77 @@ define(['bullsfirst/domain/UserContext',
         'bullsfirst/services/AccountService',
         'bullsfirst/views/TemplateManager'],
        function(UserContext, ErrorUtil, Message, MessageBus, AccountService, TemplateManager) {
+    'use strict';
 
     return Backbone.View.extend({
 
         tagName: 'tr',
 
         events: {
-            'mouseover': 'sendMouseOverMessage',
-            'mouseout': 'sendMouseOutMessage',
-            'click': 'sendDrillDownkMessage',
-            'click .left-column': 'startEditing', /* click on icon-edit is not detected on chrome */
-            'click .icon-save': 'validateInput',
-            'keydown .nameField': 'handleKeyDown' /* keypress for Escape is not detected on chrome */
+            'mouseover': 'handleMouseOverRaw',
+            'mouseout': 'handleMouseOutRaw',
+            'click': 'handleClickRaw',
+            'click .left-column': 'handleClickEditIconRaw', /* click on icon-edit is not detected on chrome */
+            'click .icon-save': 'handleClickSaveIconRaw',
+            'keydown .nameField': 'handleKeyDownOnNameRaw' /* keypress for Escape is not detected on chrome */
         },
 
-        sendMouseOverMessage: function() {
-            MessageBus.trigger(Message.AccountListMouseOver, this.model.id);
+        handleMouseOverRaw: function() {
+            MessageBus.trigger(Message.AccountMouseOverRaw, this.model.id);
+            return false;
         },
 
-        sendMouseOutMessage: function() {
-            MessageBus.trigger(Message.AccountListMouseOut, this.model.id);
+        handleMouseOver: function() {
+            this.$el.addClass('selected');
+            this.$el.find('.icon-edit').removeClass('invisible');
         },
 
-        sendDrillDownkMessage: function() {
-            MessageBus.trigger(Message.AccountListDrillDown, this.model.id);
+        handleMouseOutRaw: function() {
+            MessageBus.trigger(Message.AccountMouseOutRaw, this.model.id);
+            return false;
         },
 
-        startEditing: function() {
+        handleMouseOut: function() {
+            this.$el.removeClass('selected');
+            this.$el.find('.icon-edit').addClass('invisible');
+        },
+
+        handleClickRaw: function() {
+            MessageBus.trigger(Message.AccountClickRaw, this.model.id);
+            return false;
+        },
+
+        handleClickEditIconRaw: function() {
+            MessageBus.trigger(Message.AccountClickEditIconRaw, this.model.id);
+            return false;
+        },
+
+        handleClickEditIcon: function() {
             this.$el.find('.name').addClass('editing');
             this.$el.find('.nameField').val(this.model.get('name')).focus();
-            MessageBus.trigger(Message.AccountListStartEditing, this.model.id);
+        },
+
+        handleClickSaveIconRaw: function() {
+            this.validateInput();
             return false;
         },
 
-        stopEditing: function() {
-            this.$el.find('.name').removeClass('editing');
-            this.handleMouseOut(); // force deselection of this account in case cursor is on some other account
-            MessageBus.trigger(Message.AccountListStopEditing, this.model.id);
-            return false;
-        },
-
-        handleKeyDown: function(event) {
-            if (event.keyCode == $.ui.keyCode.ENTER) {
+        handleKeyDownOnNameRaw: function(event) {
+            if (event.keyCode === $.ui.keyCode.ENTER) {
                 this.validateInput();
                 return false;
             }
-            else if (event.keyCode == $.ui.keyCode.ESCAPE) {
+            else if (event.keyCode === $.ui.keyCode.ESCAPE) {
                 this.stopEditing();
                 return false;
             }
+
+            // If not one of the keycodes above, let the event bubble up for the input box
         },
 
         validateInput: function() {
             var newName = this.$el.find('.nameField').val();
-            if (typeof newName !== 'undefined' && newName != null && newName.length > 0) {
+            if (typeof newName !== 'undefined' && newName !== null && newName.length > 0) {
                 this.stopEditing();
 
                 // Change name of brokerage account
@@ -88,22 +105,14 @@ define(['bullsfirst/domain/UserContext',
             }
         },
 
-        changeNameDone: function(data, textStatus, jqXHR) {
+        stopEditing: function() {
+            this.$el.find('.name').removeClass('editing');
+            MessageBus.trigger(Message.AccountStoppedEditing, this.model.id);
+            this.handleMouseOutRaw(); // force deselection of this account in case cursor is on some other account
+        },
+
+        changeNameDone: function(/* data, textStatus, jqXHR */) {
             UserContext.updateAccounts();
-        },
-
-        handleMouseOver: function() {
-            this.$el.addClass('selected');
-            this.$el.find('.icon-edit').removeClass('invisible');
-        },
-
-        handleMouseOut: function() {
-            this.$el.removeClass('selected');
-            this.$el.find('.icon-edit').addClass('invisible');
-        },
-
-        handleDrillDown: function() {
-            console.log('AccountView.handleDrillDown: ' + this.model.id);
         },
 
         render: function() {

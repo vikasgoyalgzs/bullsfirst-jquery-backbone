@@ -22,6 +22,7 @@
  * @author Vikas Goyal
  */
 $.fn.serializeForm = function () {
+    'use strict';
     var o = {},
         a = this.serializeArray();
     $.each(a, function () {
