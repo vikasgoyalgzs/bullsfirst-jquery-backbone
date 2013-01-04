@@ -19,11 +19,45 @@
  *
  * @author Naresh Bhatia
  */
-define(function() {
-    'use strict';
+define(
+    [
+        'backbone',
+        'bullsfirst/domain/UserContext',
+        'bullsfirst/views/PositionSelectedAccountView',
+        'bullsfirst/views/AccountSelectorView',
+        'bullsfirst/views/PositionTableView'
+    ],
+    function(Backbone, UserContext, PositionSelectedAccountView, AccountSelectorView, PositionTableView) {
+        'use strict';
 
-    return Backbone.View.extend({
+        return Backbone.View.extend({
 
-        el: '#positions-tab'
-    });
-});
+            accountSelectorView: null,
+            positionSelectedAccountView: null,
+            positionTableView: null,
+
+            el: '#positions-tab',
+
+            initialize: function(/* options */) {
+                this.accountSelectorView = new AccountSelectorView({
+                    el: '#postab-account-selector',
+                    collection: UserContext.getBrokerageAccounts()
+                });
+
+                this.positionSelectedAccountView = new PositionSelectedAccountView({
+                    el: '#postab-selected-account-name',
+                    collection: UserContext.getBrokerageAccounts()
+                });
+
+                this.positionTableView = new PositionTableView({
+                    collection: UserContext.getBrokerageAccounts()
+                });
+            },
+
+            updatePositions: function() {
+                UserContext.updateAccounts();
+            }
+
+        });
+    }
+);

@@ -19,29 +19,38 @@
  *
  * @author Naresh Bhatia
  */
-define(['bullsfirst/framework/Formatter',
+define(
+    [
+        'bullsfirst/framework/Formatter',
+        'handlebars',
         'text!bullsfirst/templates/account.html',
+        'text!bullsfirst/templates/account-selector.html',
+        'text!bullsfirst/templates/position.html',
         'text!bullsfirst/templates/transfer.html',
-        'text!bullsfirst/templates/addExternalAccount.html'],
-       function (Formatter, accountTemplate, transferTemplate, addExternalAccountTemplate) {
-    'use strict';
+        'text!bullsfirst/templates/addExternalAccount.html'
+    ],
+    function(Formatter, Handlebars, accountTemplate, accountSelectorTemplate, positionTemplate, transferTemplate, addExternalAccountTemplate) {
+        'use strict';
 
-    var _templates;
-    return {
-        initialize: function() {
-            this._registerHelpers();
-            _templates = {
-                'account': Handlebars.compile(accountTemplate),
-                'transfer': Handlebars.compile(transferTemplate),
-                'addExternalAccount': Handlebars.compile(addExternalAccountTemplate)
-            };
-        },
+        var _templates;
 
-        _registerHelpers : function() {
-            Handlebars.registerHelper('formatMoney', function(money) {
-                return Formatter.formatMoney(money);
-            });
-            Handlebars.registerHelper('ifEqual', function (left, right, options) {
+        return {
+            initialize: function() {
+                this._registerHelpers();
+                _templates = {
+                    'account': Handlebars.compile(accountTemplate),
+                    'account-selector': Handlebars.compile(accountSelectorTemplate),
+                    'position': Handlebars.compile(positionTemplate),
+                    'transfer': Handlebars.compile(transferTemplate),
+                    'addExternalAccount': Handlebars.compile(addExternalAccountTemplate)
+                };
+            },
+
+            _registerHelpers : function() {
+                Handlebars.registerHelper('formatMoney', function(money) {
+                    return Formatter.formatMoney(money);
+                });
+                Handlebars.registerHelper('ifEqual', function (left, right, options) {
                 if (Handlebars.Utils.isEmpty(left) ||
                     Handlebars.Utils.isEmpty(right) ||
                     (left !== right)) {
@@ -50,10 +59,11 @@ define(['bullsfirst/framework/Formatter',
                     return options.fn(this);
                 }
             });
-        },
+            },
 
-        getTemplate: function(name) {
-            return _templates[name];
-        }
-    };
-});
+            getTemplate: function(name) {
+                return _templates[name];
+            }
+        };
+    }
+);

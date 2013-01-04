@@ -19,11 +19,14 @@
  *
  * @author Naresh Bhatia
  */
-define(function() {
-    'use strict';
+define(
+    [
+        'backbone'
+    ],
+    function(Backbone) {
+        'use strict';
 
-    return Backbone.View.extend({
-
-        el: '#transactions-tab'
-    });
-});
+        return Backbone.View.extend({
+        });
+    }
+);

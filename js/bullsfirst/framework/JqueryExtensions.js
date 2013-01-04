@@ -15,20 +15,25 @@
  */
 
 /**
- * bullsfirst/domain/MarketPrice
+ * bullsfirst/framework/JqueryExtensions
  *
- * @author Naresh Bhatia
+ * jQuery extension functions
+ *
+ * @author Vikas Goyal
  */
-define(
-    [
-        'backbone'
-    ],
-    function(Backbone) {
-        'use strict';
-
-        return Backbone.Model.extend({
-            urlRoot: '/bfexch-javaee/rest/market_prices',
-            idAttribute: 'symbol'
-        });
-    }
-);
+$.fn.serializeForm = function () {
+    'use strict';
+    var o = {},
+        a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};

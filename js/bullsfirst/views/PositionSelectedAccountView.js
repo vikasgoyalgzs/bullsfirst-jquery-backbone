@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright 2012 Archfirst
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,35 @@
  */
 
 /**
- * bullsfirst/views/UsernameView
+ * bullsfirst/views/PositionSelectedAccountView
  *
- * @author Naresh Bhatia
+ * @author Keith DiMatteo
  */
+
 define(
     [
-        'backbone'
+        'backbone',
+        'bullsfirst/domain/Position',
+        'bullsfirst/domain/UserContext',
+        'bullsfirst/framework/Formatter',
+        'bullsfirst/framework/MessageBus'
     ],
-    function(Backbone) {
+    function(Backbone, Position, UserContext, Formatter, MessageBus) {
         'use strict';
 
         return Backbone.View.extend({
-            initialize: function() {
-                this.model.on('change', this.render, this);
+            initialize: function(/* options */) {
+                MessageBus.on('SelectedAccountChanged', function(selectedAccount) {
+                    this.accountName = selectedAccount.get('name');
+                    this.render();
+                }, this);
             },
 
-            render: function() {
-                this.$el.html(
-                    this.model.get('firstName') + ' ' +
-                    this.model.get('lastName'));
+            render: function(){
+                this.$el.html(this.accountName);
+                return this;
             }
         });
+
     }
 );

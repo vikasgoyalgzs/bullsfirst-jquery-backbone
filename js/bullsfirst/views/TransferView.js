@@ -20,136 +20,143 @@
  * @author Vikas Goyal
  */
 /* jslint flags */
-/*global $, alert, define, Backbone*/
-define(['bullsfirst/domain/UserContext',
+/*global $, alert, define, Backbone, _*/
+define(
+    [
+        'bullsfirst/domain/UserContext',
         'bullsfirst/framework/ErrorUtil',
         'bullsfirst/framework/Message',
         'bullsfirst/framework/MessageBus',
         'bullsfirst/services/AccountService',
         'bullsfirst/services/InstrumentService',
-        'bullsfirst/views/TemplateManager'],
-       function (UserContext, ErrorUtil, Message, MessageBus, AccountService, InstrumentService, TemplateManager) {
-    'use strict';
-    return Backbone.ModalView.extend({
-        events: {
-            'click .transfer-tabbar a': 'selectTab',
-            'click select[name=toAccount]': 'processToAccountSelection',
-            'click #process-transfer-button': 'processTransfer',
-            'click #add-external-account-button': 'addExternalAcoount'
-        },
+        'bullsfirst/views/TemplateManager',
+        'backboneModal',
+        'jqueryExtensions'
+    ],
+    function (UserContext, ErrorUtil, Message, MessageBus, AccountService, InstrumentService, TemplateManager) {
+        'use strict';
 
-        selectTab: function (event) {
-            var selectedTab = $(event.currentTarget),
-                prevSelectedTab = $('.transfer-tabbar a.selected'),
-                fieldContainers = $('.transfer-fields-container');
+        return Backbone.ModalView.extend({
+            events: {
+                'click .transfer-tabbar a': 'selectTab',
+                'click select[name=toAccount]': 'processToAccountSelection',
+                'click #process-transfer-button': 'processTransfer',
+                'click #add-external-account-button': 'addExternalAcoount'
+            },
 
-            if (selectedTab[0] !== prevSelectedTab[0]) {
-                $('#transfer-form').validationEngine('hideAll');
+            selectTab: function (event) {
+                var selectedTab = $(event.currentTarget),
+                    prevSelectedTab = $('.transfer-tabbar a.selected'),
+                    fieldContainers = $('.transfer-fields-container');
 
-                //toggle display of field containers (securities vs cash)
+                if (selectedTab[0] !== prevSelectedTab[0]) {
+                    $('#transfer-form').validationEngine('hideAll');
 
-                fieldContainers.toggleClass('nodisplay');
-                fieldContainers.find('input').toggleClass('validate[required]');
+                    //toggle display of field containers (securities vs cash)
 
-                //toggle selected tab
-                selectedTab.toggleClass('selected');
-                prevSelectedTab.toggleClass('selected');
+                    fieldContainers.toggleClass('nodisplay');
+                    fieldContainers.find('input').toggleClass('validate[required]');
 
-                //re-attach validation engine
-                $('#transfer-form').validationEngine();
-            }
-            return false;
-        },
+                    //toggle selected tab
+                    selectedTab.toggleClass('selected');
+                    prevSelectedTab.toggleClass('selected');
 
-        processToAccountSelection: function (event) {
-            //TODO: Find a better way to display empty option for a 'select' tag
-            var toAccountDropdown = $(event.currentTarget),
-                emptyOption = toAccountDropdown.find('option[value=""]');
-
-            if (emptyOption) {
-                emptyOption.hide();
-            }
-        },
-
-        processTransfer: function () {
-            //get the form currently being displayed
-            var transferRequest,
-                transferForm = $('#transfer-form');
-
-            if (transferForm.validationEngine('validate')) {
-                transferRequest = transferForm.serializeForm();
-                //if the price is non-zero, the request is for securities transfer
-                if (transferRequest.price) {
-                    this.transferSecurities(transferRequest);
-                } else {
-                    this.transferCash(transferRequest);
+                    //re-attach validation engine
+                    $('#transfer-form').validationEngine();
                 }
-            }
-            return false;
-        },
+                return false;
+            },
 
-        transferCash: function (transferCashRequest) {
-            AccountService.transferCash(transferCashRequest.fromAccount,
-                {
-                    toAccountId: transferCashRequest.toAccount,
-                    amount: transferCashRequest.amount
-                }, _.bind(this.transferProcessed, this), ErrorUtil.showError);
-        },
+            processToAccountSelection: function (event) {
+                //TODO: Find a better way to display empty option for a 'select' tag
+                var toAccountDropdown = $(event.currentTarget),
+                    emptyOption = toAccountDropdown.find('option[value=""]');
 
-        transferSecurities: function (transferSecuritiesRequest) {
-            AccountService.transferSecurities(transferSecuritiesRequest.fromAccount,
-                {
-                    toAccountId: transferSecuritiesRequest.toAccount,
-                    symbol: transferSecuritiesRequest.symbol,
-                    quantity: transferSecuritiesRequest.quantity,
-                    pricePaidPerShare: {
-                        amount: transferSecuritiesRequest.price,
-                        currency: 'USD'
+                if (emptyOption) {
+                    emptyOption.hide();
+                }
+            },
+
+            processTransfer: function () {
+                //get the form currently being displayed
+                var transferRequest,
+                    transferForm = $('#transfer-form');
+
+                if (transferForm.validationEngine('validate')) {
+                    transferRequest = transferForm.serializeForm();
+                    //if the price is non-zero, the request is for securities transfer
+                    if (transferRequest.price) {
+                        this.transferSecurities(transferRequest);
+                    } else {
+                        this.transferCash(transferRequest);
                     }
-                }, _.bind(this.transferProcessed, this), ErrorUtil.showError);
-        },
+                }
+                return false;
+            },
+
+            transferCash: function (transferCashRequest) {
+                AccountService.transferCash(transferCashRequest.fromAccount,
+                    {
+                        toAccountId: transferCashRequest.toAccount,
+                        amount: transferCashRequest.amount
+                    }, _.bind(this.transferProcessed, this), ErrorUtil.showError);
+            },
+
+            transferSecurities: function (transferSecuritiesRequest) {
+                AccountService.transferSecurities(transferSecuritiesRequest.fromAccount,
+                    {
+                        toAccountId: transferSecuritiesRequest.toAccount,
+                        symbol: transferSecuritiesRequest.symbol,
+                        quantity: transferSecuritiesRequest.quantity,
+                        pricePaidPerShare: {
+                            amount: transferSecuritiesRequest.price,
+                            currency: 'USD'
+                        }
+                    }, _.bind(this.transferProcessed, this), ErrorUtil.showError);
+            },
         
-        transferProcessed: function () {
-            alert('Transfer processed');
-            UserContext.updateAccounts();
-            $('#modalCloseButton').click();
-        },
+            transferProcessed: function () {
+                alert('Transfer processed');
+                UserContext.updateAccounts();
+                $('#modalCloseButton').click();
+            },
 
-        addExternalAcoount: function () {
-            alert('Under Construction');
-        },
+            addExternalAcoount: function () {
+                alert('Under Construction');
+            },
 
-        populateSymbolField: function () {
-            //get instruments
-            InstrumentService.getInstruments(function (data) {
-                var instruments = $.map(data, function (instrument) {
-                    return {
-                        label: instrument.symbol + ' (' + instrument.name + ')',
-                        value: instrument.symbol
-                    };
+            populateSymbolField: function () {
+                //get instruments
+                InstrumentService.getInstruments(function (data) {
+                    var instruments = $.map(data, function (instrument) {
+                        return {
+                            label: instrument.symbol + ' (' + instrument.name + ')',
+                            value: instrument.symbol
+                        };
+                    });
+                    $('#symbol').autocomplete({
+                        source: instruments
+                    });
+                }, ErrorUtil.showError);
+            },
+
+            render: function() {
+                var template = TemplateManager.getTemplate('transfer'),
+                    accounts = this.model.toJSON(),
+                    selectedAccount = UserContext.getSelectedAccount(),
+                    that = this;
+
+                $(this.el).html(template({
+                    accounts: accounts,
+                    selectedAccount: selectedAccount
+                }));
+                _.defer(function () {
+                    $('#transfer-form').validationEngine();
+                    that.populateSymbolField();
                 });
-                $('#symbol').autocomplete({
-                    source: instruments
-                });
-            }, ErrorUtil.showError);
-        },
+                return this;
+            }
 
-        render: function() {
-            var template = TemplateManager.getTemplate('transfer'),
-                accounts = this.model.toJSON(),
-                selectedAccount = UserContext.getSelectedAccount(),
-                that = this;
-
-            $(this.el).html(template({
-                accounts: accounts,
-                selectedAccount: selectedAccount
-            }));
-            _.defer(function () {
-                $('#transfer-form').validationEngine();
-                that.populateSymbolField();
-            });
-            return this;
-        }
-
-    });
-});
+        });
+    }
+);

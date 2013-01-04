@@ -19,11 +19,16 @@
  *
  * @author Naresh Bhatia
  */
-define(['bullsfirst/domain/Position'],
-       function(Position) {
-    'use strict';
+define(
+    [
+        'backbone',
+        'bullsfirst/domain/Position'
+    ],
+    function(Backbone, Position) {
+        'use strict';
 
-    return Backbone.Collection.extend({
-        model: Position
-    });
-});
+        return Backbone.Collection.extend({
+            model: Position
+        });
+    }
+);

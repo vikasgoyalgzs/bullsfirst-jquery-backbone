@@ -30,12 +30,11 @@ define(['bullsfirst/domain/UserContext',
         'bullsfirst/views/TransactionsTabView',
         'bullsfirst/views/UsernameView',
         'bullsfirst/views/TransferView'],
-       function (UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView,
-                 PositionsTabView, TabbarView, TransactionsTabView, UsernameView, TransferView) {
+       function(UserContext, Message, MessageBus, Page, AccountsTabView, OrdersTabView, PositionsTabView, TabbarView,
+                TransactionsTabView, UsernameView, TransferView) {
     'use strict';
 
     return Page.extend({
-        el: '#user-page',
         usernameView: null,
         tabbarView: null,
         accountsTabView: null,
@@ -51,12 +50,12 @@ define(['bullsfirst/domain/UserContext',
         },
 
         initialize: function() {
-            this.usernameView = new UsernameView({model: UserContext.getUser()});
+            this.usernameView = new UsernameView({el: '.username-view', model: UserContext.getUser()});
             this.tabbarView = new TabbarView({el: '#user-page .tabbar'});
-            this.accountsTabView = new AccountsTabView();
-            this.positionsTabView = new PositionsTabView();
-            this.ordersTabView = new OrdersTabView();
-            this.transactionsTabView = new TransactionsTabView();
+            this.accountsTabView = new AccountsTabView({el: '#accounts-tab'});
+            this.positionsTabView = new PositionsTabView({el: '#positions-tab'});
+            this.ordersTabView = new OrdersTabView({el: '#orders-tab'});
+            this.transactionsTabView = new TransactionsTabView({el: '#transactions-tab'});
 
             // Subscribe to events
             MessageBus.on(Message.UserLoggedInEvent, function() {
