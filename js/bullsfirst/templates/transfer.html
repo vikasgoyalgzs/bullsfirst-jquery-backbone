@@ -1,5 +1,5 @@
-﻿<div class='modal-header'>Transfer</div>
-<div class="transfer-tabbar" data-tabbar="transfer">
+﻿<div id='modal-header'>Transfer</div>
+<div id="transfer-tabbar" data-tabbar="transfer">
     <ul>
         <li><a href="#" data-tab="cash-tab" class="selected">Cash</a></li>
         <li><a href="#" data-tab="securities-tab">Securities</a></li>
@@ -20,7 +20,7 @@
         {{/each}}
     </select>
     <div id="securities-fields-container" class="nodisplay transfer-fields-container">
-        <div class="hboxContainer">
+        <div id="hboxContainer">
             <div class="symbol">
                 <label for="symbol">Symbol</label>
                 <input type="text" name="symbol" id="symbol">
@@ -34,7 +34,7 @@
                     class="validate[custom[number],min[1]]"/>
             </div>
         </div>
-        <label for="price">Price</label>
+        <label for="price">Price Paid/Share</label>
         <input
             id="price"
             name="price"

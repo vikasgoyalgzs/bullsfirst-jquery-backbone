@@ -304,9 +304,9 @@ Backbone.ModalView =
                             .css({
                                 "position": "absolute",
                                 "top": "5px",
-                                "right": "5px",
-                                "width": "16px",
-                                "height": "16px",
+                                "right": "-5px",
+                                "width": "32px",
+                                "height": "32px",
                                 "background": "transparent url(" + view.options.closeImageUrl + ") top left no-repeat",
                                 "text-decoration": "none"
                             })

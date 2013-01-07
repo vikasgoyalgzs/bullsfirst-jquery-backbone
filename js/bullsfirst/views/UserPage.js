@@ -89,9 +89,10 @@ define(['bullsfirst/domain/UserContext',
                     'targetContainer': $('#transfer-window').draggable(),
                     //TODO: move this to a css file
                     css: {
+                        'top': '0px',
                         'right': '0px',
-                        'bottom': '0px',
-                        'padding': '10px',
+                        'padding-left': '9.5px',
+                        'padding-right': '9.5px',
                         'background-color': 'transparent'
                     }
                 }

@@ -38,7 +38,7 @@ define(
 
         return Backbone.ModalView.extend({
             events: {
-                'click .transfer-tabbar a': 'selectTab',
+                'click #transfer-tabbar a': 'selectTab',
                 'click select[name=toAccount]': 'processToAccountSelection',
                 'click #process-transfer-button': 'processTransfer',
                 'click #add-external-account-button': 'addExternalAcoount'
@@ -46,7 +46,7 @@ define(
 
             selectTab: function (event) {
                 var selectedTab = $(event.currentTarget),
-                    prevSelectedTab = $('.transfer-tabbar a.selected'),
+                    prevSelectedTab = $('#transfer-tabbar a.selected'),
                     fieldContainers = $('.transfer-fields-container');
 
                 if (selectedTab[0] !== prevSelectedTab[0]) {

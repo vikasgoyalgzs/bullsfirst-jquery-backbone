@@ -110,18 +110,18 @@ label {
     font: 11px/25px Aller;
     height: 25px;
     padding-left: 9px;
-    width: 71px;
+    width: 81px;
 }
 
 input[type="text"], input[type="password"] {
-    height: 21px;
+    height: 25px;
     margin-bottom: 10px;
     padding: 1px;
-    width: 98.5%;
+    width: 100%;
 }
 
 select {
-    height: 21px;
+    height: 25px;
     margin-bottom: 10px;
     padding: 1px;
     width: 100%;
@@ -826,61 +826,77 @@ footer a {
 }
 
 /* -----------------------------------------------------------------------------
- * Transfer Window
+ * Transfer Popup Window
  * -------------------------------------------------------------------------- */
+.buttonPressed {
+    background-color: #404040 !important;
+    color: #F04100 !important;
+}
+.formError {
+    z-index: 999999;
+}
+
+#transfer-window {
+    top: 20px;
+    right: 20px;
+}
+
 #modalContainer {
     font: 12px/25px Aller;
     color: white;
     background-color: #404040;
-    margin-bottom: 0px;
-    margin-right: 10px;
     border: 8px solid rgb(255, 255, 255);
     border: 8px solid rgba(255, 255, 255, .75);
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 }
 
-#modalContainer .transfer-tabbar {
+#modal-header {
+    background-color: transparent;
+    margin-bottom: 12px;
+    margin-top: 3px;
+    font-size: 16px;
+}
+
+#transfer-tabbar {
     left: 0px;
-    top: 10px;
-    min-height: 60px;
+    top: 23px;
+    height: 50px;
     position: relative;
     font: 12px/25px Aller !important;
-    margin-bottom: 7px;
 } 
 
-.transfer-tabbar ul {
+#transfer-tabbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.transfer-tabbar ul li {
+#transfer-tabbar ul li {
     display: inline;
     float: left;
 }
 
-.transfer-tabbar ul li a {
+#transfer-tabbar ul li a {
     background-color: #F8791B;
     color: #FFFFFF;
     display: block;
-    height: 35px;
-    line-height: 35px;
-    margin: 0px 3px 0 0;
-    min-width: 120px;
-    padding: 5px;
+    height: 44px;
+    line-height: 44px;
+    margin: 0px 0px 0 0;
+    width: 130px;
     text-align: center;
-    font-size: 13px;
+    font-size: 14px;
     border-width:3px;
     border-color: transparent;
     border-style:solid;
 }
 
-.transfer-tabbar ul li a:hover {
+#transfer-tabbar ul li a:hover {
     background-color: #F36733;
 }
 
-.transfer-tabbar ul li a.selected {
+#transfer-tabbar ul li a.selected {
     background-color: red;
     color: white;
     margin-top: 0;
@@ -889,57 +905,74 @@ footer a {
     border-style:solid;
 }
 
-#process-transfer-button {
-    margin-left: 33%;
-    margin-top: 5px;
-    position: absolute;
-    bottom: 20px;
+#transfer-form {
+    margin-top: 34px;
+    height: 281px;
+    width: 271px;
 }
 
-.modal-header {
-    background-color: transparent;
-    margin-top: -10px;
-    margin-bottom: 5px;
-    font-size: 16px;
+#transfer-form input[type="text"] {
+    height: 20px;
+    width: 98%;
 }
 
-#add-external-account-button {
-    font-size: 12px;
+#transfer-form label {
+    width: 87px;
 }
 
-.hboxContainer:before, .hboxContainer:after {
+#hboxContainer:before, #hboxContainer:after {
     content: "";
     display: table;
 }
-.hboxContainer:after {
+
+#hboxContainer:after {
     clear: both;
 }
-.hboxContainer {
+
+#hboxContainer {
     height: 100%;
     width: 100%;
     zoom: 1;
 }
-    .hboxContainer div {
-        width: 48%;
-        float: left;
-    }
-        .hboxContainer div.symbol {
-            margin-right: 8px;
-        }
-.buttonPressed {
-    background-color: #404040 !important;
-    color: #F04100 !important;
+
+#hboxContainer div {
+    width: 47%;
+    float: left;
 }
-.formError {
-    z-index: 999999;
+
+#hboxContainer div.symbol {
+    margin-right: 14px;
 }
-#transfer-form {
-    height: 350px;
-    width: 270px;
+
+#transfer-form input[type=text].lastField {
+    margin-bottom: 15px;
 }
-.lastField {
-    margin-bottom: 3px;
-}
+
 #price {
-    margin-bottom: 3px;
+    margin-bottom: 15px;
+}
+
+#add-external-account-button {
+    font-size: 12px;
+    display: block;
+    color: #F47513;
+    background-image: url(../img/add-external-acct.png);
+    background-position:0px 3px;
+    background-size: 18px;
+    background-repeat: no-repeat;
+}
+
+#add-external-account-button span {
+    position: relative;
+    left: 23px;
+}
+
+#add-external-account-button:hover {
+    text-decoration: underline;
+}
+
+#process-transfer-button {
+    margin-left: 29%;
+    margin-top: 9px;
+    margin-bottom: 20px;
 }
