@@ -123,6 +123,7 @@ define(
 
             addExternalAcoount: function () {
                 alert('Under Construction');
+                return false;
             },
 
             populateSymbolField: function () {

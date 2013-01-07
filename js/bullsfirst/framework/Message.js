@@ -33,5 +33,6 @@ define({
     SelectedAccountChanged: 'SelectedAccountChanged',
     TabSelectionRequest: 'TabSelectionRequest',
     UserLoggedInEvent: 'UserLoggedInEvent',
-    UserLoggedOutEvent: 'UserLoggedOutEvent'
+    UserLoggedOutEvent: 'UserLoggedOutEvent',
+    AccountLoadedEvent: 'AccountsLoadedEvent'
 });

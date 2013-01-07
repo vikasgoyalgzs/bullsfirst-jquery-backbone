@@ -198,6 +198,10 @@ a.button.large span  {
     text-align: center;
 }
 
+.button-bar {
+    display: none;
+}
+
 .button-bar a.button {
     float: left;
 }
@@ -828,10 +832,6 @@ footer a {
 /* -----------------------------------------------------------------------------
  * Transfer Popup Window
  * -------------------------------------------------------------------------- */
-.buttonPressed {
-    background-color: #404040 !important;
-    color: #F04100 !important;
-}
 .formError {
     z-index: 999999;
 }
@@ -855,7 +855,8 @@ footer a {
     background-color: transparent;
     margin-bottom: 12px;
     margin-top: 3px;
-    font-size: 16px;
+    font-family: Aller Light, Aller, sans-serif;
+    font-size: 18px;
 }
 
 #transfer-tabbar {
@@ -863,7 +864,7 @@ footer a {
     top: 23px;
     height: 50px;
     position: relative;
-    font: 12px/25px Aller !important;
+    font: 14px/25px Aller;
 } 
 
 #transfer-tabbar ul {
@@ -975,4 +976,5 @@ footer a {
     margin-left: 29%;
     margin-top: 9px;
     margin-bottom: 20px;
+    font-size:14px;
 }

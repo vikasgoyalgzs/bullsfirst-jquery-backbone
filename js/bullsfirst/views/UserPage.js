@@ -60,6 +60,10 @@ define(['bullsfirst/domain/UserContext',
             // Subscribe to events
             MessageBus.on(Message.UserLoggedInEvent, function() {
                 UserContext.updateAccounts();
+                // After accounts have been loaded, show trade and transfer buttons
+                MessageBus.on(Message.AccountsLoadedEvent, function () {
+                    $('.button-bar').show();
+                });
             });
         },
 
@@ -79,6 +83,10 @@ define(['bullsfirst/domain/UserContext',
         },
 
         transfer: function (event) {
+            // if transfer window already present, do nothing and return
+            if ($('#modalContainer').length > 0) {
+                return false;
+            }
             var transferButton = $(event.currentTarget),
                 transferView = new TransferView({ model: UserContext.getBaseAccounts() });
 

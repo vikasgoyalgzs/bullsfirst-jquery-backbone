@@ -24,7 +24,7 @@ Backbone.ModalView =
 		    slideFromBelow: false,
 		    slideDistance: 150,
 		    closeImageUrl: "img/close-modal.png",
-		    closeImageHoverUrl: "img/close-modal-hover.png",
+		    closeImageHoverUrl: "img/close-modal.png",
 		    showModalAtScrollPosition: true,
 		    permanentlyVisible: false,
 		    backgroundClickClosesModal: true,
